@@ -17,7 +17,6 @@ RUN apt-get update && \
     mutter \
     x11vnc \
     # Python/pyenv reqs
-    build-essential \
     libssl-dev  \
     zlib1g-dev \
     libbz2-dev \
