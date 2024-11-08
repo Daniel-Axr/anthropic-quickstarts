@@ -50,6 +50,9 @@ Once the container is running, see the [Accessing the demo app](#accessing-the-d
 
 ### Bedrock
 
+> [!TIP]
+> To use the new Claude 3.5 Sonnet on Bedrock, you first need to [request model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-modify.html).
+
 You'll need to pass in AWS credentials with appropriate permissions to use Claude on Bedrock.
 
 You have a few options for authenticating with Bedrock. See the [boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html#environment-variables) for more details and options.
@@ -62,7 +65,7 @@ docker run \
     -e API_PROVIDER=bedrock \
     -e AWS_PROFILE=$AWS_PROFILE \
     -e AWS_REGION=us-west-2 \
-    -v $HOME/.aws/credentials:/home/computeruse/.aws/credentials \
+    -v $HOME/.aws:/home/computeruse/.aws \
     -v $HOME/.anthropic:/home/computeruse/.anthropic \
     -p 5900:5900 \
     -p 8501:8501 \
@@ -153,6 +156,11 @@ docker run \
 
 We do not recommend sending screenshots in resolutions above [XGA/WXGA](https://en.wikipedia.org/wiki/Display_resolution_standards#XGA) to avoid issues related to [image resizing](https://docs.anthropic.com/en/docs/build-with-claude/vision#evaluate-image-size).
 Relying on the image resizing behavior in the API will result in lower model accuracy and slower performance than implementing scaling in your tools directly. The `computer` tool implementation in this project demonstrates how to scale both images and coordinates from higher resolutions to the suggested resolutions.
+
+
+When implementing computer use yourself, we recommend using XGA resolution (1024x768):
+- For higher resolutions: Scale the image down to XGA and let the model interact with this scaled version, then map the coordinates back to the original resolution proportionally.
+- For lower resolutions or smaller devices (e.g. mobile devices): Add black padding around the display area until it reaches 1024x768.
 
 ## Development
 
